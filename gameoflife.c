@@ -78,6 +78,5 @@ int main() {
 		display_grid(grid, rows, cols);
 		grid = update_grid(grid, rows, cols);
 		usleep(75000);
-		system("clear");
 	}
 }
