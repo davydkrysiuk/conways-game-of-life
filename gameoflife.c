@@ -2,19 +2,23 @@
 #include "time.h"
 #include "stdio.h"
 #include "unistd.h"
-
+#include <ncurses.h>
 
 
 void display_grid(int** grid, int rows, int cols) {
+
 	for (int row = 0; row < rows; ++row) {
 		for (int col = 0; col < cols; ++col) {
 			if (grid[row][col] == 1) {
-				printf("#");
+			  attron(COLOR_PAIR(1));
+			  mvaddch(row, col, ' ');
+			  attroff(COLOR_PAIR(1));
 			} else {
-				printf("\033[0;30m#\033[0m");
+			  attron(COLOR_PAIR(2));
+			  mvaddch(row, col, ' ');
+			  attroff(COLOR_PAIR(2));
 			}		
 		}
-		printf("\n");
 	}
 }
 
@@ -74,9 +78,25 @@ int main() {
 	int** grid = init_grid(rows, cols);
 	random_grid(grid, rows, cols);
 
+	initscr();
+	noecho();
+	curs_set(FALSE);
+	timeout(1000);
+	start_color();
+	init_pair(1, COLOR_BLACK, COLOR_WHITE);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
+
 	while(1) {
-		display_grid(grid, rows, cols);
-		grid = update_grid(grid, rows, cols);
-		usleep(75000);
+
+	  display_grid(grid, rows, cols);
+	  refresh();
+	  
+	  grid = update_grid(grid, rows, cols);
+
+	  refresh();
+	  usleep(72500);
 	}
+
+	endwin();
+	return 0;
 }

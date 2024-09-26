@@ -1,2 +1,2 @@
 all: gameoflife.c
-	clang gameoflife.c -o gol -Wextra -Wall
+	gcc gameoflife.c -o gol -Wextra -Wall -lncurses
